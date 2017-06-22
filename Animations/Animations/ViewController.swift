@@ -42,7 +42,33 @@ class ViewController: UIViewController {
             image.image = UIImage(named: "frame_\(i)_delay-0.08s.gif")
         }
     }
+
+    @IBAction func fadeIn(_ sender: Any) {
+        image.alpha = 0
+        
+        UIView.animate(withDuration: 1, animations: {
+            self.image.alpha = 1
+        })
+    }
     
+    @IBAction func slideIn(_ sender: Any) {
+        image.center = CGPoint(x: image.center.x - 500, y: image.center.y - 500)
+        
+        UIView.animate(withDuration: 2, animations: {
+            self.image.center = CGPoint(x: self.image.center.x + 500, y: self.image.center.y + 500)
+        })
+    }
+    
+    @IBAction func grow(_ sender: Any) {
+        let originalWidth = image.frame.width
+        let originalHeight = image.frame.height
+        
+        image.frame.size = CGSize(width: 0, height: 0)
+        
+        UIView.animate(withDuration: 2, animations: {
+            self.image.frame.size = CGSize(width: originalWidth, height: originalHeight)
+        })
+    }
     
     
 }
