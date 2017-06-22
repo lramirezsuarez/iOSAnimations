@@ -9,38 +9,40 @@
 import UIKit
 
 class ViewController: UIViewController {
-
+    
     @IBOutlet weak var image: UIImageView!
+    @IBOutlet weak var button: UIButton!
     
     var timer = Timer()
     var i=0
-
+    var isAnimating = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
     }
-
+    
     @IBAction func nextImage(_ sender: Any) {
-        timer = Timer.scheduledTimer(timeInterval: 0.08, target: self, selector: #selector(ViewController.processImages), userInfo: nil, repeats: true)
+        if isAnimating {
+            timer.invalidate()
+            button.setTitle("Start animation", for: [])
+            isAnimating = false
+        } else {
+            timer = Timer.scheduledTimer(timeInterval: 0.08, target: self, selector: #selector(ViewController.processImages), userInfo: nil, repeats: true)
+            button.setTitle("Stop animation", for: [])
+            isAnimating = true
+        }
     }
     
     func processImages() {
-            if (i < 40) {
-                image.image = UIImage(named: "frame_\(i)_delay-0.08s.gif")
-                i += 1
-            } else {
-                timer.invalidate()
-                i = 0
-                image.image = UIImage(named: "frame_\(i)_delay-0.08s.gif")
-                let alert = UIAlertController(title: "Alert!", message: "The Animation has FINISHED", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                self.present(alert, animated: true, completion: nil)
-            }
+        image.image = UIImage(named: "frame_\(i)_delay-0.08s.gif")
+        i += 1
+        if i == 39 {
+            i = 0
+            image.image = UIImage(named: "frame_\(i)_delay-0.08s.gif")
+        }
     }
     
-    @IBAction func stopAnimation(_ sender: Any) {
-        timer.invalidate()
-    }
     
     
 }
